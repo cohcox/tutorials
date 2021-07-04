@@ -1,20 +1,23 @@
 #include <iostream>
+#include <ctime>
 
-void PrintIntroduction()
+// Game introduction
+void PrintIntroduction(int Difficulty)
 {
     // Print welcome message to terminal
-    std::cout << "\n\nYou are a secret agent breaking into a secure server room\n";
-    std::cout << "You need to enter the correct code to continue...\n\n";
+    std::cout << "\n\nYou are a secret agent breaking into a level " << Difficulty;
+    std::cout << " secure server room...\nEnter the correct code to continue...\n\n";
 }
 
-bool PlayGame()
+// Main game loop
+bool PlayGame(int Difficulty)
 {
-    PrintIntroduction();
+    PrintIntroduction(Difficulty);
 
     // Declare the 3 number code
-    const int CodeA = 4;
-    const int CodeB = 9;
-    const int CodeC = 7;
+    const int CodeA = rand() % Difficulty + Difficulty;
+    const int CodeB = rand() % Difficulty + Difficulty;
+    const int CodeC = rand() % Difficulty + Difficulty;
 
     const int CodeSum = CodeA + CodeB + CodeC;
     const int CodeProduct = CodeA * CodeB * CodeC;
@@ -46,11 +49,21 @@ bool PlayGame()
 
 int main()
 {
-    while(true)
+    srand(time(NULL)); // Create random sequence based on the time of day
+
+    int LevelDifficulty = 1;
+    const int MaxLevel = 10;
+
+    while(LevelDifficulty <= MaxLevel) // Loop until all levels are completed
     {
-        bool bLevelComplete = PlayGame();
+        bool bLevelComplete = PlayGame(LevelDifficulty);
         std::cin.clear(); // Clears any errors
         std::cin.ignore(); // Discards the buffer
+
+        if(bLevelComplete)
+        {
+            ++LevelDifficulty;
+        }
     }
     return 0;
 }
